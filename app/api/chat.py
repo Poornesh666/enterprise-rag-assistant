@@ -12,10 +12,12 @@ from app.core.security import get_current_user
 from app.schemas.chat import ChatRequest
 from app.rag.retriever import retrieve_documents
 from app.rag.pipeline import build_prompt
+from app.core.logging import logger
+from app.schemas.responses import ChatResponse
 
 router = APIRouter()
 
-@router.post("/chat")
+@router.post("/chat", response_model=ChatResponse)
 async def chat(
     request: ChatRequest,
     current_user: dict = Depends(get_current_user),
@@ -23,12 +25,17 @@ async def chat(
     """
     Generate a role-aware response using RAG + Ollama.
     """
+    logger.info(f"Chat request from user '{current_user['username']}' with role '{current_user['role']}': {request.message}")
+    
     docs = retrieve_documents(
         query=request.message,
         role=current_user["role"],
     )
     
+    logger.info(f"Retrieved {len(docs)} document(s).")
+    
     if not docs:
+        logger.warning(f"No documents found for role '{current_user['role']}'.")
         raise HTTPException(
             status_code=404,
             detail=f"No documents found for role '{current_user['role']}'.",
@@ -46,6 +53,8 @@ async def chat(
   )
 
     llm_answer = generate_response(prompt)
+
+    logger.info("Response generated successfully.")
 
     return {
         "username": current_user["username"],

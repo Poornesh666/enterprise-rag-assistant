@@ -7,10 +7,12 @@ from fastapi.security import OAuth2PasswordRequestForm
 
 from app.core.security import verify_password, create_access_token, get_current_user
 from app.data.users import users_db
+from app.core.logging import logger
+from app.schemas.responses import LoginResponse, TestResponse
 
 router = APIRouter()
 
-@router.post("/login")
+@router.post("/login", response_model=LoginResponse)
 def login(form_data: OAuth2PasswordRequestForm = Depends()):
     """
     Authenticate a user and return a JWT access token.
@@ -22,6 +24,8 @@ def login(form_data: OAuth2PasswordRequestForm = Depends()):
         form_data.password,
         user["password"],
     ):
+        logger.warning(f"Failed login attempt for '{form_data.username}'.")
+        
         raise HTTPException(
             status_code=401,
             detail="Invalid username or password.",
@@ -34,6 +38,8 @@ def login(form_data: OAuth2PasswordRequestForm = Depends()):
         }
     )
 
+    logger.info(f"User '{form_data.username}' logged in successfully.")
+
     return {
         "access_token": token,
         "token_type": "bearer",
@@ -41,7 +47,7 @@ def login(form_data: OAuth2PasswordRequestForm = Depends()):
     }
 
 
-@router.get("/test")
+@router.get("/test", response_model=TestResponse)
 def test(current_user: dict = Depends(get_current_user)):
     """
     Test endpoint for verifying JWT authentication.
