@@ -32,7 +32,7 @@ def register(
 
     if existing_user:
         raise HTTPException(
-            status_code=400,
+            status_code=409,
             detail="Username already exists.",
         )
 
@@ -88,6 +88,7 @@ def login(
         "token_type": "bearer",
         "role": user.role,
     }
+
 
 
 @router.get("/test", response_model=TestResponse)

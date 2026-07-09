@@ -1,0 +1,8 @@
+.venv
+.git
+__pycache__
+.pytest_cache
+*.pyc
+.env
+enterprise_rag.db
+app/chroma_dbs
