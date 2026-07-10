@@ -21,7 +21,7 @@ The project follows a modular backend architecture with REST APIs, SQLite for us
 
 **System Architecture**
 <p align="center">
-  <img src="assets/architecture.png" alt="System Architecture" width="900">
+  <img src="assets/architecture.png" alt="System Architecture" width="700">
 </p>
 The application follows a modular backend architecture where authenticated users submit queries through a REST API. The system retrieves relevant document chunks using ChromaDB, augments the prompt with contextual information, generates responses using Ollama, and returns role-restricted answers based on JWT-authenticated user permissions.
 
@@ -213,14 +213,6 @@ Current test coverage includes:
 
 **Note:** This project currently runs locally using Ollama for privacy and offline inference. A cloud deployment can be achieved by replacing the local LLM with a hosted inference provider such as OpenAI or Groq.
 
-**Author**
-**Poornesh**
-
-Integrated M.Tech Software Engineering  
-VIT Vellore
-
-Feel free to connect or contribute to the project.
-
 **Key Learning Outcomes**
 This project helped me gain practical experience with:
 
@@ -235,3 +227,11 @@ This project helped me gain practical experience with:
 - Ollama local LLM integration
 - Docker containerization
 - Automated API testing using Pytest
+
+**Author:**
+**Poornesh**
+
+Integrated M.Tech Software Engineering  
+VIT Vellore
+
+Feel free to connect or contribute to the project.
