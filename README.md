@@ -21,7 +21,7 @@ The project follows a modular backend architecture with REST APIs, SQLite for us
 
 **System Architecture**
 <p align="center">
-  <img src="assets/architecture.png" alt="System Architecture" width="500">
+  <img src="assets/architecture.png" alt="System Architecture" width="350">
 </p>
 The application follows a modular backend architecture where authenticated users submit queries through a REST API. The system retrieves relevant document chunks using ChromaDB, augments the prompt with contextual information, generates responses using Ollama, and returns role-restricted answers based on JWT-authenticated user permissions.
 
