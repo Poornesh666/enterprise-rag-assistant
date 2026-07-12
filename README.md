@@ -1,37 +1,61 @@
 # Enterprise RAG Assistant
+> Secure, role-based Retrieval-Augmented Generation (RAG) assistant built with FastAPI, ChromaDB, LangChain, and Groq.
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.116-green)
 ![Docker](https://img.shields.io/badge/Docker-Containerized-blue)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
+**Table of Contents**
+
+- Project Overview
+- Features
+- Live Demo
+- System Architecture
+- Tech Stack
+- Project Structure
+- Getting Started
+- API Endpoints
+- Authentication Flow
+- RAG Workflow
+- Testing
+- Future Improvements
+- Screenshots
+- Learning Outcomes
+
 **Project Overview**
 
-An enterprise-grade Retrieval-Augmented Generation (RAG) assistant built using FastAPI, LangChain, ChromaDB, Ollama, and SQLAlchemy.
+An enterprise-grade Retrieval-Augmented Generation (RAG) assistant built using FastAPI, LangChain, ChromaDB, Groq, and SQLAlchemy.
 
 The application enables secure, role-based document retrieval using JWT authentication and Retrieval-Augmented Generation (RAG). Users receive responses generated from department-specific knowledge bases while Role-Based Access Control (RBAC) ensures they can only access authorized documents.
 
 The project follows a modular backend architecture with REST APIs, SQLite for user management, ChromaDB for vector storage, Docker support, and automated API testing using Pytest.
 
 **Features**
-- JWT-based Authentication and Authorization
+- JWT Authentication & Authorization
 - Role-Based Access Control (RBAC)
 - Retrieval-Augmented Generation (RAG)
-- Department-specific document retrieval
-- Semantic search using ChromaDB
-- Ollama-powered local LLM inference
-- SQLite database with SQLAlchemy ORM
-- RESTful APIs built with FastAPI
-- Dockerized application
-- Automated API testing using Pytest
-- Modular and scalable backend architecture
+- Semantic Search using ChromaDB
+- Groq LLM Integration
+- LangChain Prompt Pipeline
+- SQLite with SQLAlchemy ORM
+- Streamlit Chat Interface
+- Dockerized Deployment
+- Automated API Testing using Pytest
+
+**Live Demo**
+
+| Service | Link |
+|----------|------|
+| Frontend | Coming Soon |
+| Backend API | Coming Soon |
 
 **System Architecture**
 <p align="center">
   <img src="assets/architecture.png" alt="System Architecture" width="350">
 </p>
-The application follows a modular backend architecture where authenticated users submit queries through a REST API. The system retrieves relevant document chunks using ChromaDB, augments the prompt with contextual information, generates responses using Ollama, and returns role-restricted answers based on JWT-authenticated user permissions.
+The application follows a modular client-server architecture where Streamlit communicates with FastAPI through REST APIs. The backend authenticates users using JWT, retrieves relevant document chunks from ChromaDB, constructs a Retrieval-Augmented Generation (RAG) prompt, and sends it to the Groq LLM for response generation.
 
-Tech Stack
+**Tech Stack**
 | Category | Technologies |
 |----------|--------------|
 | Backend | FastAPI |
@@ -40,7 +64,7 @@ Tech Stack
 | ORM | SQLAlchemy |
 | Authentication | JWT, OAuth2 |
 | Vector Database | ChromaDB |
-| LLM | Ollama |
+| LLM | Groq API |
 | RAG Framework | LangChain |
 | Embeddings | Sentence Transformers |
 | Testing | Pytest |
@@ -113,29 +137,11 @@ enterprise-rag-assistant/
      ```bash
      cp .env.example .env
      ```
-
-     Start Ollama
-
      ```bash
-     ollama serve
+     GROQ_API_KEY=your_api_key
+     GROQ_MODEL=llama-3.3-70b-versatile
      ```
-
-     Pull the required model
-
-     ```bash
-     ollama pull llama3.2
-     ```
-
-     Run FastAPI
-
-     ```bash
-     uvicorn app.main:app --reload
-     ```
-
-     Swagger
-
-     ```
-     http://localhost:8000/docs
+     
      ```
    **Docker Setup**
      Build the Docker image
@@ -165,22 +171,38 @@ API Endpoints
 | GET | `/test` | Verify JWT authentication |
 
 **Authentication Flow**
-1. User registers using `/register`
-2. User logs in using `/login`
-3. FastAPI validates credentials
-4. A JWT Access Token is generated
-5. Client sends the token in the `Authorization` header
-6. Protected endpoints verify the token before processing requests
+1. Register a new account.
+2. Login using valid credentials.
+3. FastAPI validates the user.
+4. JWT Access Token is generated.
+5. Token is stored in Streamlit session state.
+6. Protected endpoints validate the JWT before processing requests.
 
-**How RAG Works**
-1. User submits a natural language query.
-2. JWT authentication verifies the user's identity.
-3. RBAC filters documents based on the user's department.
-4. ChromaDB performs semantic similarity search.
-5. The most relevant document chunks are retrieved.
-6. Retrieved context is combined with the user's question.
-7. Ollama generates a context-aware response.
-8. FastAPI returns the final answer to the client.
+**RAG Workflow**
+```text
+User Question
+      │
+      ▼
+JWT Authentication
+      │
+      ▼
+Role-Based Access Control
+      │
+      ▼
+Semantic Search (ChromaDB)
+      │
+      ▼
+Retrieve Relevant Documents
+      │
+      ▼
+Prompt Construction
+      │
+      ▼
+Groq LLM
+      │
+      ▼
+AI Response
+```
 
 **Testing**
 Automated API tests are written using **Pytest** and **FastAPI TestClient**.
@@ -200,7 +222,6 @@ Current test coverage includes:
 - Streaming LLM responses
 - Admin dashboard
 - CI/CD with GitHub Actions
-- Cloud deployment
 
 **Screenshots**
 ### Swagger UI
@@ -225,14 +246,14 @@ This project helped me gain practical experience with:
 - FastAPI backend development
 - REST API design
 - JWT Authentication & Authorization
-- Role-Based Access Control (RBAC)
 - SQLAlchemy ORM
-- SQLite database management
+- Dependency Injection
 - Retrieval-Augmented Generation (RAG)
 - ChromaDB vector database
-- Ollama local LLM integration
+- LangChain
+- Groq API integration
 - Docker containerization
-- Automated API testing using Pytest
+- Automated API testing
 
 **Author:**
 **Poornesh**
