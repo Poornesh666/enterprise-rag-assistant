@@ -1,5 +1,6 @@
 # Enterprise RAG Assistant
 **Project Overview**
+
 An enterprise-grade Retrieval-Augmented Generation (RAG) assistant built using FastAPI, LangChain, ChromaDB, Ollama, and SQLAlchemy.
 
 The application enables secure, role-based document retrieval using JWT authentication and Retrieval-Augmented Generation (RAG). Users receive responses generated from department-specific knowledge bases while Role-Based Access Control (RBAC) ensures they can only access authorized documents.
