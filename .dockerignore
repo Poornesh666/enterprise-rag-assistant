@@ -5,4 +5,3 @@ __pycache__
 *.pyc
 .env
 enterprise_rag.db
-app/chroma_dbs
