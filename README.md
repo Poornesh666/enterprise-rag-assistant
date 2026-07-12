@@ -25,7 +25,7 @@
 
 **Project Overview**
 
-An enterprise-grade Retrieval-Augmented Generation (RAG) assistant built using FastAPI, LangChain, ChromaDB, Groq, and SQLAlchemy.
+An enterprise-grade Retrieval-Augmented Generation (RAG) assistant built using FastAPI, LangChain, ChromaDB, Groq, SQLAlchemy, and Streamlit.  
 
 The application enables secure, role-based document retrieval using JWT authentication and Retrieval-Augmented Generation (RAG). Users receive responses generated from department-specific knowledge bases while Role-Based Access Control (RBAC) ensures they can only access authorized documents.
 
@@ -100,7 +100,7 @@ enterprise-rag-assistant/
 
     **Prerequisites**
     - Python 3.11+
-     - Groq API or Ollama(for local)
+     - Groq API or Ollama(for local LLM)
      - Git
      - Docker (Optional)
     **Installation**
@@ -139,13 +139,23 @@ enterprise-rag-assistant/
 
      Configure environment variables
 
-     ```bash
-     cp .env.example .env
-     ```
-     ```bash
-     GROQ_API_KEY=your_api_key
-     GROQ_MODEL=llama-3.3-70b-versatile
-     ```
+    ```bash
+    cp .env.example .env
+    ```
+    
+    Update the `.env` file with your Groq API Key.
+    
+    Run FastAPI
+    
+    ```bash
+    uvicorn app.main:app --reload
+    ```
+    
+    Run Streamlit
+    
+    ```bash
+    streamlit run frontend/app.py
+    ```
      
      ```
    **Docker Setup**
@@ -225,12 +235,13 @@ Current test coverage includes:
 - Chat API
 
 **Future Improvements**
-- PostgreSQL support
+- PostgreSQL migration
 - Redis caching
+- Streaming responses
 - Conversation history
-- Streaming LLM responses
-- Admin dashboard
-- CI/CD with GitHub Actions
+- Source citations
+- Kubernetes deployment
+- CI/CD using GitHub Actions
 
 **Screenshots**
 
@@ -248,7 +259,9 @@ Current test coverage includes:
 <img src="assets/streamlit.png" width="900">
 </p>
 
-**Note:** This project currently runs locally using Ollama for privacy and offline inference. A cloud deployment can be achieved by replacing the local LLM with a hosted inference provider such as OpenAI or Groq.
+> **Note**
+>
+> This project uses the **Groq API** for cloud-hosted LLM inference while storing document embeddings locally in **ChromaDB**. The application is fully Dockerized for local deployment. Free-tier cloud deployment of local vector databases may require additional infrastructure due to memory constraints.
 
 **Key Learning Outcomes**
 
