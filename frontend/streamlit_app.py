@@ -62,50 +62,134 @@ def check_connection():
 
 
 # =========================================================
-# Login - Authenticate user and store JWT token
+# Authentication - Login & Register
 # =========================================================
 if st.session_state.token is None:
 
-    st.subheader("🔐 Login")
+    login_tab, register_tab = st.tabs(
+        ["🔐 Login", "📝 Register"]
+    )
 
-    username = st.text_input("Username")
-    password = st.text_input("Password", type="password")
+    # -----------------------------------------------------
+    # Login - Authenticate user
+    # -----------------------------------------------------
+    with login_tab:
 
-    if st.button("Login", use_container_width=True):
+        username = st.text_input(
+            "Username",
+            key="login_username",
+        )
 
-        with st.spinner("Authenticating user..."):
+        password = st.text_input(
+            "Password",
+            type="password",
+            key="login_password",
+        )
 
-            try:
+        if st.button(
+            "Login",
+            use_container_width=True,
+        ):
 
-                response = requests.post(
-                    f"{API_URL}/login",
-                    data={
-                        "username": username,
-                        "password": password,
-                    },
-                    timeout=10,
-                )
+            with st.spinner("Authenticating user..."):
 
-                if response.status_code == 200:
+                try:
 
-                    data = response.json()
+                    response = requests.post(
+                        f"{API_URL}/login",
+                        data={
+                            "username": username,
+                            "password": password,
+                        },
+                        timeout=10,
+                    )
 
-                    st.session_state.token = data["access_token"]
-                    st.session_state.username = username
-                    st.session_state.role = data["role"]
+                    if response.status_code == 200:
 
-                    st.success("Login Successful!")
+                        data = response.json()
 
-                    st.rerun()
+                        st.session_state.token = data["access_token"]
+                        st.session_state.username = username
+                        st.session_state.role = data["role"]
 
-                else:
+                        st.success("Login Successful!")
 
-                    st.error("Invalid username or password.")
+                        st.rerun()
 
-            except requests.RequestException:
+                    else:
 
-                st.error("Unable to connect to the backend.")
+                        st.error("Invalid username or password.")
 
+                except requests.RequestException:
+
+                    st.error("Unable to connect to backend.")
+
+    # -----------------------------------------------------
+    # Register - Create new user
+    # -----------------------------------------------------
+    with register_tab:
+
+        new_username = st.text_input(
+            "Username",
+            key="register_username",
+        )
+
+        new_password = st.text_input(
+            "Password",
+            type="password",
+            key="register_password",
+        )
+
+        role = st.selectbox(
+            "Role",
+            [
+                "engineering",
+                "hr",
+                "finance",
+                "marketing",
+            ],
+        )
+
+        if st.button(
+            "Register",
+            use_container_width=True,
+        ):
+
+            with st.spinner("Creating account..."):
+
+                try:
+
+                    response = requests.post(
+                        f"{API_URL}/register",
+                        json={
+                            "username": new_username,
+                            "password": new_password,
+                            "role": role,
+                        },
+                        timeout=10,
+                    )
+
+                    if response.status_code == 200:
+
+                        st.success(
+                            "Registration successful! Please login."
+                        )
+
+                    else:
+
+                        try:
+
+                            detail = response.json()["detail"]
+
+                        except Exception:
+
+                            detail = "Registration failed."
+
+                        st.error(detail)
+
+                except requests.RequestException:
+
+                    st.error("Unable to connect to backend.")
 
 # =========================================================
 # Chat Page - Display AI Assistant
@@ -267,5 +351,5 @@ Try asking questions related to your department's documents.
 st.divider()
 
 st.caption(
-    "Enterprise RAG Assistant • FastAPI • SQLAlchemy • LangChain • ChromaDB • Ollama • Docker"
+    "Enterprise RAG Assistant • FastAPI • SQLAlchemy • LangChain • ChromaDB • Groq • Docker"
 )

@@ -1,35 +1,40 @@
-# app/rag/llm.py
-# -----------------------------
-# Query Ollama
-# -----------------------------
+# ---------------------------------------------------------
+# Query Groq LLM
+# ---------------------------------------------------------
 
-import requests
+from groq import Groq
 from fastapi import HTTPException
 
 from app.core.config import settings
 
+client = Groq(
+    api_key=settings.groq_api_key,
+)
+
 
 def generate_response(prompt: str) -> str:
     """
-    Send the prompt to Ollama and return the generated response.
+    Send the prompt to Groq and return the generated response.
     """
 
-    response = requests.post(
-        settings.ollama_url,
-        json={
-            "model": settings.ollama_model,
-            "prompt": prompt,
-            "stream": False,
-            "options": {
-                "temperature": 0.7,
-            },
-        },
-    )
+    try:
 
-    if response.status_code != 200:
-        raise HTTPException(
-            status_code=503,
-            detail="Unable to reach the Ollama service.",
+        response = client.chat.completions.create(
+            model=settings.groq_model,
+            messages=[
+                {
+                    "role": "user",
+                    "content": prompt,
+                }
+            ],
+            temperature=0.7,
         )
 
-    return response.json()["response"]
+        return response.choices[0].message.content
+
+    except Exception as e:
+
+        raise HTTPException(
+            status_code=503,
+            detail=f"Groq service unavailable: {str(e)}",
+        )
