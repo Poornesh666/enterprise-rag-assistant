@@ -10,7 +10,6 @@
 
 - Project Overview
 - Features
-- Live Demo
 - System Architecture
 - Tech Stack
 - Project Structure
@@ -43,13 +42,6 @@ The project follows a modular backend architecture with REST APIs, SQLite for us
 - Streamlit Chat Interface
 - Dockerized Deployment
 - Automated API Testing using Pytest
-
-**Live Demo**
-
-| Service | Link |
-|----------|------|
-| Frontend | Coming Soon |
-| Backend API | Coming Soon |
 
 **System Architecture**
 <p align="center">
