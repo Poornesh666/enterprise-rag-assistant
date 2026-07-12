@@ -97,9 +97,10 @@ enterprise-rag-assistant/
 ```
 
 **Getting Started**
+
     **Prerequisites**
     - Python 3.11+
-     - Ollama
+     - Groq API or Ollama(for local)
      - Git
      - Docker (Optional)
     **Installation**
@@ -167,6 +168,7 @@ enterprise-rag-assistant/
      ```
 
 **API Endpoints**
+
 | Method | Endpoint | Description |
 |---------|----------|-------------|
 | POST | `/register` | Register a new user |
@@ -175,6 +177,7 @@ enterprise-rag-assistant/
 | GET | `/test` | Verify JWT authentication |
 
 **Authentication Flow**
+
 1. Register a new account.
 2. Login using valid credentials.
 3. FastAPI validates the user.
@@ -183,6 +186,7 @@ enterprise-rag-assistant/
 6. Protected endpoints validate the JWT before processing requests.
 
 **RAG Workflow**
+
 ```text
 User Question
       │
@@ -209,6 +213,7 @@ AI Response
 ```
 
 **Testing**
+
 Automated API tests are written using **Pytest** and **FastAPI TestClient**.
 
 Current test coverage includes:
@@ -228,6 +233,7 @@ Current test coverage includes:
 - CI/CD with GitHub Actions
 
 **Screenshots**
+
 ### Swagger UI
 
 <p align="center">
@@ -245,6 +251,7 @@ Current test coverage includes:
 **Note:** This project currently runs locally using Ollama for privacy and offline inference. A cloud deployment can be achieved by replacing the local LLM with a hosted inference provider such as OpenAI or Groq.
 
 **Key Learning Outcomes**
+
 This project helped me gain practical experience with:
 
 - FastAPI backend development
