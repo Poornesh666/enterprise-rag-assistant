@@ -1,5 +1,6 @@
 # Enterprise RAG Assistant
 > Secure, role-based Retrieval-Augmented Generation (RAG) assistant built with FastAPI, ChromaDB, LangChain, and Groq.
+> 
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.116-green)
 ![Docker](https://img.shields.io/badge/Docker-Containerized-blue)
@@ -31,6 +32,7 @@ The application enables secure, role-based document retrieval using JWT authenti
 The project follows a modular backend architecture with REST APIs, SQLite for user management, ChromaDB for vector storage, Docker support, and automated API testing using Pytest.
 
 **Features**
+
 - JWT Authentication & Authorization
 - Role-Based Access Control (RBAC)
 - Retrieval-Augmented Generation (RAG)
@@ -56,6 +58,7 @@ The project follows a modular backend architecture with REST APIs, SQLite for us
 The application follows a modular client-server architecture where Streamlit communicates with FastAPI through REST APIs. The backend authenticates users using JWT, retrieves relevant document chunks from ChromaDB, constructs a Retrieval-Augmented Generation (RAG) prompt, and sends it to the Groq LLM for response generation.
 
 **Tech Stack**
+
 | Category | Technologies |
 |----------|--------------|
 | Backend | FastAPI |
@@ -71,6 +74,7 @@ The application follows a modular client-server architecture where Streamlit com
 | Containerization | Docker, Docker Compose |
 
 **Project Structure**
+
 ```text
 enterprise-rag-assistant/
 │
@@ -162,7 +166,7 @@ enterprise-rag-assistant/
      docker compose up --build
      ```
 
-API Endpoints
+**API Endpoints**
 | Method | Endpoint | Description |
 |---------|----------|-------------|
 | POST | `/register` | Register a new user |
