@@ -50,3 +50,4 @@ sqlalchemy
 # Hugging Face
 # -------------------------
 langchain-huggingface
+langchain-chroma
