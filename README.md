@@ -89,120 +89,85 @@ enterprise-rag-assistant/
 ```
 
 **Getting Started**
-Prerequisites
 
-Make sure the following are installed:
+    **Prerequisites**
+    - Python 3.11+
+     - Groq API or Ollama(for local LLM)
+     - Git
+     - Docker (Optional)
+    **Installation**
+    Clone the repository
 
-Python 3.11+
-Git
-Docker (optional)
+     ```bash
+     git clone <repository-url>
+     cd enterprise-rag-assistant
+     ```
 
-You will also need:
+     Create a virtual environment
 
-A Groq API Key
-A Hugging Face Access Token
-1. Clone the Repository
-git clone https://github.com/your-username/enterprise-rag-assistant.git
+     ```bash
+     python -m venv .venv
+     ```
 
-cd enterprise-rag-assistant
-2. Create a Virtual Environment
-Windows
-python -m venv .venv
+     Activate it
 
-.venv\Scripts\activate
-Linux / macOS
-python3 -m venv .venv
+     Windows
 
-source .venv/bin/activate
-3. Install Dependencies
-pip install -r requirements.txt
-4. Configure Environment Variables
+     ```bash
+     .venv\Scripts\activate
+     ```
 
-Create a .env file in the project root:
+     Linux / macOS
 
-GROQ_API_KEY=gsk_your_groq_api_key_here
-GROQ_MODEL=openai/gpt-oss-20b
+     ```bash
+     source .venv/bin/activate
+     ```
 
-HUGGINGFACEHUB_API_TOKEN=hf_your_huggingface_token_here
+     Install dependencies
 
-JWT_SECRET=your_super_secret_jwt_key
-ALGORITHM=HS256
-ACCESS_TOKEN_EXPIRE_MINUTES=30
+     ```bash
+     pip install -r requirements.txt
+     ```
 
-Important: Never commit your .env file or API keys to GitHub.
+     Configure environment variables
 
-5. Run the Application
-Start the FastAPI Backend
-uvicorn app.main:app --reload --port 8000
+    ```bash
+    cp .env.example .env
+    ```
+    
+    Update the `.env` file with your Groq API Key.
+    
+    Run FastAPI
+    
+    ```bash
+    uvicorn app.main:app --reload
+    ```
+    
+    Run Streamlit
+    
+    ```bash
+    streamlit run frontend/app.py
+    ```
+     
+     ```
+   **Docker Setup**
+     Build the Docker image
 
-The API will be available at:
+     ```bash
+     docker build -t enterprise-rag .
+     ```
 
-http://127.0.0.1:8000
-Start the Streamlit Frontend
+     Run the container
 
-Open another terminal:
+     ```bash
+     docker run -p 8000:8000 --env-file .env enterprise-rag
+     ```
 
-streamlit run frontend/app.py
+     Or using Docker Compose
 
-**API Documentation**
-
-FastAPI automatically provides interactive Swagger documentation.
-
-Open:
-
-http://127.0.0.1:8000/docs
-
-You can use Swagger UI to:
-
-Register users
-Authenticate users
-Obtain JWT tokens
-Test protected endpoints
-Send RAG queries
-
-**Docker Setup**
-
-The backend can also be run using Docker Compose.
-
-docker compose up --build
-
-This builds the application container and starts the configured services.
-
-**Deployment**
-Backend — Render
-
-The FastAPI backend can be deployed as a Render Web Service.
-
-Configuration
-
-Runtime
-
-Python 3
-
-Build Command
-
-pip install -r requirements.txt
-
-Start Command
-
-uvicorn app.main:app --host 0.0.0.0 --port $PORT
-Environment Variables
-
-Configure the following variables in Render:
-
-GROQ_API_KEY
-GROQ_MODEL
-HUGGINGFACEHUB_API_TOKEN
-JWT_SECRET
-Frontend — Streamlit Cloud
-
-Deploy the frontend application using Streamlit Cloud.
-
-Configure the backend URL through Streamlit Secrets:
-
-BACKEND_URL = "https://your-fastapi-backend.onrender.com"
-
-The Streamlit frontend then communicates with the deployed FastAPI backend through REST APIs.
+     ```bash
+     docker compose up --build
+     ```
 
 **API Endpoints**
 
@@ -213,73 +178,41 @@ The Streamlit frontend then communicates with the deployed FastAPI backend throu
 | POST | `/chat` | Query the RAG assistant |
 | GET | `/test` | Verify JWT authentication |
 
-**RAG & Security Workflow**
+**Authentication Flow**
 
-The complete request flow is:
+1. Register a new account.
+2. Login using valid credentials.
+3. FastAPI validates the user.
+4. JWT Access Token is generated.
+5. Token is stored in Streamlit session state.
+6. Protected endpoints validate the JWT before processing requests.
 
-┌──────────────────┐
-│  User Question   │
-└────────┬─────────┘
-         │
-         ▼
-┌──────────────────┐
-│   JWT Auth Check │
-└────────┬─────────┘
-         │
-         ▼
-┌──────────────────┐
-│ Extract User Role│
-│      (RBAC)      │
-└────────┬─────────┘
-         │
-         ▼
-┌──────────────────┐
-│ ChromaDB         │
-│ Similarity Search│
-│ Role Restricted  │
-└────────┬─────────┘
-         │
-         ▼
-┌──────────────────┐
-│ Retrieved Context│
-└────────┬─────────┘
-         │
-         ▼
-┌──────────────────┐
-│ Augmented Prompt │
-└────────┬─────────┘
-         │
-         ▼
-┌──────────────────┐
-│    Groq LLM      │
-└────────┬─────────┘
-         │
-         ▼
-┌──────────────────┐
-│ Generated Answer │
-└──────────────────┘
-Security Flow
-User
-  │
-  ▼
-Login
-  │
-  ▼
-JWT Token
-  │
-  ▼
-Authenticated Request
-  │
-  ▼
-Extract Role
-  │
-  ├── Engineering ──► Engineering Documents
-  │
-  ├── HR ───────────► HR Documents
-  │
-  └── Management ──► Management Documents
+**RAG Workflow**
 
-This ensures that document retrieval is constrained by the authenticated user's role.
+```text
+User Question
+      │
+      ▼
+JWT Authentication
+      │
+      ▼
+Role-Based Access Control
+      │
+      ▼
+Semantic Search (ChromaDB)
+      │
+      ▼
+Retrieve Relevant Documents
+      │
+      ▼
+Prompt Construction
+      │
+      ▼
+Groq LLM
+      │
+      ▼
+AI Response
+```
 
 **Testing**
 
