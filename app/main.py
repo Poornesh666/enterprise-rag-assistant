@@ -20,6 +20,10 @@ from app.api.chat import router as chat_router
 from app.core.logging import logger
 from app.core.exceptions import global_exception_handler
 
+from dotenv import load_dotenv
+
+load_dotenv()  # Loads variables from .env into os.environ
+
 app = FastAPI(
     title="Enterprise RAG Assistant",
     description="Role-Based AI Assistant powered by FastAPI, ChromaDB, Ollama and JWT.",
