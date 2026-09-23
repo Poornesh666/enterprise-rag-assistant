@@ -50,4 +50,13 @@ sqlalchemy
 # Hugging Face
 # -------------------------
 langchain-huggingface
+
+# -------------------------
+# ChromaDB
+# -------------------------
 langchain-chroma
+
+# -------------------------
+# groq
+# -------------------------
+groq>=0.1.0
