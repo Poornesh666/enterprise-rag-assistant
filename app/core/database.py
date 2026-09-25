@@ -11,13 +11,13 @@ from app.core.config import settings
 
 
 # ---------------------------------------------------------
-# Embedding Configuration
-# Uses Hugging Face API — doesn't load model weights locally
+# Hugging Face Embeddings
 # ---------------------------------------------------------
 embedding_function = HuggingFaceEndpointEmbeddings(
     model="sentence-transformers/all-MiniLM-L6-v2",
     huggingfacehub_api_token=settings.huggingfacehub_api_token,
 )
+
 
 vectordb = Chroma(
     persist_directory=settings.chroma_db_path,
@@ -27,7 +27,7 @@ vectordb = Chroma(
 
 
 # ---------------------------------------------------------
-# SQLite Database Configuration
+# SQLite Database
 # ---------------------------------------------------------
 SQLALCHEMY_DATABASE_URL = "sqlite:///./enterprise_rag.db"
 
@@ -46,21 +46,23 @@ Base = declarative_base()
 
 
 # ---------------------------------------------------------
-# Initialize Database
-# Create tables if they do not already exist
+# Initialize Database Tables
 # ---------------------------------------------------------
 def init_db():
+    """
+    Create all database tables if they do not already exist.
+    """
     Base.metadata.create_all(bind=engine)
 
 
 # ---------------------------------------------------------
 # Database Dependency
-# Provide a database session to API endpoints
 # ---------------------------------------------------------
 def get_db():
     db = SessionLocal()
 
     try:
         yield db
+
     finally:
         db.close()
