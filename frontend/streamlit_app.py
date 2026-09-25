@@ -5,7 +5,14 @@ import streamlit as st
 # ---------------------------------------------------------
 # Backend Configuration
 # ---------------------------------------------------------
-API_URL = "http://127.0.0.1:8000"
+import os
+import streamlit as st
+import requests
+
+API_URL = os.getenv(
+    "API_URL",
+    "http://127.0.0.1:8000"
+)
 
 # ---------------------------------------------------------
 # Streamlit Page Configuration
@@ -351,5 +358,5 @@ Try asking questions related to your department's documents.
 st.divider()
 
 st.caption(
-    "Enterprise RAG Assistant • FastAPI • SQLAlchemy • LangChain • ChromaDB • Groq • Docker"
+    "Enterprise RAG Assistant • FastAPI • SQLAlchemy • LangChain • ChromaDB"
 )
