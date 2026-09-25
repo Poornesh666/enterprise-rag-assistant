@@ -19,8 +19,10 @@ from app.api.auth import router as auth_router
 from app.api.chat import router as chat_router
 from app.core.logging import logger
 from app.core.exceptions import global_exception_handler
+from app.core.database import init_db
 
 from dotenv import load_dotenv
+
 
 load_dotenv()  # Loads variables from .env into os.environ
 
@@ -29,6 +31,11 @@ app = FastAPI(
     description="Role-Based AI Assistant powered by FastAPI, ChromaDB, Ollama and JWT.",
     version="2.0.0",
 )
+# ---------------------------------------------------------
+# Initialize Database
+# Create required SQLite tables
+# ---------------------------------------------------------
+init_db()
 
 logger.info("Enterprise RAG Assistant started successfully.")
 

@@ -1,7 +1,6 @@
 # ---------------------------------------------------------
 # Load Chroma Vector Database
 # ---------------------------------------------------------
-from langchain_community.embeddings import SentenceTransformerEmbeddings
 from langchain_chroma import Chroma
 from langchain_huggingface import HuggingFaceEndpointEmbeddings
 
@@ -10,15 +9,15 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 
 from app.core.config import settings
 
-import os
 
-# Uses Hugging Face API — doesn't load model weights locally!
+# ---------------------------------------------------------
+# Embedding Configuration
+# Uses Hugging Face API — doesn't load model weights locally
+# ---------------------------------------------------------
 embedding_function = HuggingFaceEndpointEmbeddings(
     model="sentence-transformers/all-MiniLM-L6-v2",
-    huggingfacehub_api_token=settings.huggingfacehub_api_token
+    huggingfacehub_api_token=settings.huggingfacehub_api_token,
 )
-
-print("Loaded HF Token:", settings.huggingfacehub_api_token[:5] if settings.huggingfacehub_api_token else "NONE")
 
 vectordb = Chroma(
     persist_directory=settings.chroma_db_path,
@@ -27,6 +26,9 @@ vectordb = Chroma(
 )
 
 
+# ---------------------------------------------------------
+# SQLite Database Configuration
+# ---------------------------------------------------------
 SQLALCHEMY_DATABASE_URL = "sqlite:///./enterprise_rag.db"
 
 engine = create_engine(
@@ -43,11 +45,22 @@ SessionLocal = sessionmaker(
 Base = declarative_base()
 
 
+# ---------------------------------------------------------
+# Initialize Database
+# Create tables if they do not already exist
+# ---------------------------------------------------------
+def init_db():
+    Base.metadata.create_all(bind=engine)
+
+
+# ---------------------------------------------------------
+# Database Dependency
+# Provide a database session to API endpoints
+# ---------------------------------------------------------
 def get_db():
     db = SessionLocal()
 
     try:
         yield db
-
     finally:
         db.close()
