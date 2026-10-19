@@ -2,7 +2,7 @@
 # Load Chroma Vector Database
 # ---------------------------------------------------------
 from langchain_chroma import Chroma
-from langchain_huggingface import HuggingFaceEndpointEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
@@ -13,12 +13,12 @@ from app.core.config import settings
 # ---------------------------------------------------------
 # Hugging Face Embeddings
 # ---------------------------------------------------------
-embedding_function = HuggingFaceEndpointEmbeddings(
-    model="sentence-transformers/all-MiniLM-L6-v2",
-    huggingfacehub_api_token=settings.huggingfacehub_api_token,
+# Generate embeddings locally instead of using paid API inference
+embedding_function = HuggingFaceEmbeddings(
+    model_name=settings.embedding_model
 )
 
-
+# Connect to the existing persistent Chroma collection.
 vectordb = Chroma(
     persist_directory=settings.chroma_db_path,
     embedding_function=embedding_function,

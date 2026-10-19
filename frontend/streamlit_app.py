@@ -47,25 +47,25 @@ if "messages" not in st.session_state:
 # ---------------------------------------------------------
 # Backend Connection - Verify API availability
 # ---------------------------------------------------------
+
 def check_connection():
-
-    headers = {
-        "Authorization": f"Bearer {st.session_state.token}"
-    }
-
+    """Check whether the FastAPI backend is reachable."""
     try:
-
         response = requests.get(
-            f"{API_URL}/test",
-            headers=headers,
-            timeout=3,
+            f"{API_URL}/health",
+            timeout=5,
         )
+
+        print("API URL:", API_URL)
+        print("Health status:", response.status_code)
+        print("Health response:", response.text)
 
         return response.status_code == 200
 
-    except requests.RequestException:
-
+    except requests.RequestException as exc:
+        print("Backend connection error:", repr(exc))
         return False
+
 
 
 # =========================================================

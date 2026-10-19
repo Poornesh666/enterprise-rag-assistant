@@ -14,8 +14,8 @@ from langchain_community.document_loaders import (
     TextLoader,
     UnstructuredFileLoader,
 )
-from langchain_community.embeddings import SentenceTransformerEmbeddings
-from langchain_community.vectorstores import Chroma
+from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_chroma import Chroma
 
 from app.core.config import settings
 
@@ -27,10 +27,9 @@ from app.core.config import settings
 DOCUMENTS_DIR = Path("resources/documents")
 CHROMA_DIR = Path(settings.chroma_db_path)
 
-embedding_model = SentenceTransformerEmbeddings(
+embedding_model = HuggingFaceEmbeddings(
     model_name=settings.embedding_model
 )
-
 
 # ---------------------------------------------------------
 # Build Chroma Vector Database

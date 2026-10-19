@@ -53,10 +53,7 @@ def test_register_duplicate_username(client):
     )
 
     assert response.status_code == 409
-
-    data = response.json()
-
-    assert data["detail"] == "Username already exists."
+    assert response.json()["detail"] == "Username already exists."
     
 def test_login_nonexistent_user(client):
     response = client.post(
