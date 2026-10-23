@@ -51,7 +51,10 @@ Thumbs.db
 # Local databases
 *.db
 
+
 # -----------------------------
 # Chroma DB
 # -----------------------------
 app/chroma_db/
+app/chroma_db_backup/
+app/chroma_db_build_*/
